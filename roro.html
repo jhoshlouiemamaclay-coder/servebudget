@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Budget Serve</title>
+<style>
+:root {
+  --primary: #ff69b4;
+  --dark: #1d3557;
+  --gray: #6c757d;
+  --pink : #FE4EDA;
+  --header-height: 75px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: var(--header-height);
+  background: #1d3557;
+}
+
+header { 
+  background: black; 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: var(--header-height); 
+  z-index: 101; 
+}
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 100%;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  color: white;
+  text-shadow: 2px 2px 6px black, 0 0 10px black;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  padding: 8px 0;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a:active {
+  color: var(--primary);
+}
+
+.nav-links a:hover::after,
+.nav-links a:active::after {
+  width: 100%;
+}
+
+.logo {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+}
+
+.page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+#home {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+              url('https://images.unsplash.com/photo-1618325508550-951512a1e82d?fm=jpg&q=60&w=3000&auto=format&fit=crop') center/cover fixed;
+}
+
+#canteen1 {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+              url('images/kol.jpg') center/cover fixed;
+}
+
+#canteen2 {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+              url('images/yut.jpg') center/cover fixed;
+}
+
+#canteen3 {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+              url('images/por.jpg') center/cover fixed;
+}
+
+.hero {
+  position: relative;
+  color: white;
+ text-shadow: 2px 2px 6px black, 0 0 10px black;  text-align: left;
+  padding: 70px 15px;
+  overflow: hidden;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero h1, .hero p {
+  position: relative;
+  z-index: 2;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-title { 
+  font-size: 18px; 
+  color: white; 
+  text-shadow: 2px 2px 6px black, 0 0 10px black;
+  margin-bottom: 30px; 
+  text-align: left; 
+  font-weight: 700;
+  display: inline-flex; 
+  align-items: center;
+  gap: 15px;
+  padding: 6px 18px; 
+  border-radius: 50px; 
+  background: var(--primary); 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.page-title::before {
+  content: '';
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: url('images/jema.png') center/cover no-repeat;
+  border: 1px solid black;
+  flex-shrink: 0;
+}
+
+.price-section { margin-bottom: 50px; }
+
+.section-label {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 2px 2px 6px black, 0 0 10px black; 
+  margin-bottom: 20px;
+  padding-left: 15px;
+  border-left: 5px solid var(--primary);
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.menu-item {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.menu-item:hover { transform: translateY(-5px); }
+
+.menu-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.item-info { padding: 15px; }
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.item-name { font-size: 18px; font-weight: 600; }
+.item-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.item-desc {
+  color: var(--gray);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+footer {
+  background: var(--dark);
+  padding: 40px 20px;
+  margin-top: auto;
+  width: 100%;
+  text-align: left;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.footer-brand img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.footer-brand h3 {
+  font-size: 20px; 
+  font-weight: 700;
+  color: white;
+  text-shadow: 2px 2px 6px black, 0 0 10px black;
+  margin: 0;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.footer-links {
+  margin: 20px 0;
+  text-align: left;
+}
+  .footer-josh p{
+    color: white;
+  text-shadow: 2px 2px 6px black, 0 0 10px black;  text-align: left;
+  text-decoration: none;
+  margin: 0 15px 0 0; 
+  display: inline-block;
+}
+  
+.footer-links a {
+ color: var(--primary);
+  text-shadow: 2px 2px 6px black, 0 0 10px black;  text-align: left;
+  text-decoration: none;
+  margin: 0 15px 0 0; 
+  display: inline-block;
+}
+
+.footer-copy {
+  font-size: 14px;
+  color: #bbb;
+  margin-top: 15px;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .footer-links a { display: block; margin: 10px 0; }
+  :root { --header-height: 60px; }
+  .hero h1 { font-size: 32px; }
+  .hero-logo { width: 45px; height: 45px; }
+  .menu-grid { grid-template-columns: 1fr; }
+  .nav-links { gap: 15px; font-size: 14px; }
+}
+
+</style>
+</head>
+<body> 
+<header> 
+  <div class="nav"> 
+    <a href="https://www.facebook.com/share/1D1x3u7H3Y/"> 
+      <img src="images/jema.png" alt="Logo" class="logo"> 
+    </a> 
+    <nav class="nav-links"> 
+      <a href="#home">Home</a> 
+      <a href="#canteen1">Canteen 1</a> 
+      <a href="#canteen2">Canteen 2</a> 
+      <a href="#canteen3">Canteen 3</a> 
+    </nav> 
+  </div> 
+</header> 
+
+<section id="home" class="page hero">
+  <img src="images/por.png" alt="Adobo">
+  <h1>Budget Serve</h1>
+  <p>Smart Budget, Smart Service</p>
+</section>
+
+<section id="canteen1" class="page">
+  <div class="container">
+    <h2 class="page-title">Canteen 1</h2>
+    
+    <div class="price-section"> 
+  <h3 class="section-label">Under ₱30</h3> 
+  <div class="menu-grid"> 
+    <div class="menu-item"> 
+      <img src="images/has.jpg" alt="Hash Brown"> 
+      <div class="item-info"> 
+        <div class="item-header"> 
+          <div class="item-name">Hash Brown</div> 
+          <div class="item-price">₱20.00/pc</div> 
+        </div> 
+        <div class="item-desc"> Shredded Potatoes shaped into perfect patties and fried until golden <a HREF="https://listonic.com/p/nutrition/hash-browns"> See More</a> </div> 
+      </div> 
+    </div> 
+    
+    <div class="menu-item"> 
+      <img src="images/poooo.jpeg" alt="Plain Lugaw"> 
+      <div class="item-info"> 
+        <div class="item-header"> 
+          <div class="item-name">Plain Lugaw</div> 
+          <div class="item-price">₱25.00</div> 
+        </div> 
+        <div class="item-desc">A Filipino food made with glutinous rice in water or broth <a href="https://mb.com.ph/2021/4/22/lugaw-is-the-nations-comfort-food">See more</a></div> 
+      </div> 
+    </div> 
+  </div> 
+</div>
+
+    <div class="price-section"> 
+  <h3 class="section-label">₱30 - ₱50</h3> 
+  <div class="menu-grid"> 
+    <div class="menu-item"> 
+      <img src="images/erp.jpg" alt="Chop suey"> 
+      <div class="item-info"> 
+        <div class="item-header"> 
+          <div class="item-name">Chop suey</div> 
+          <div class="item-price">₱45.00</div> 
+        </div> 
+        <div class="item-desc">A stir-fried vegetable dish that is cooked with meats such as chicken and pork<a HREF="https://hicaps.com.ph/chopsuey-recipe/?srsltid=AfmBOopIMnTfGnXateqYykzGlLI6uznSzT_8P71JH2tiO5SplJSXHks0"> See More</a> </div>
+      </div> 
+    </div> 
+
+    <div class="menu-item">
+          <img src="images/lang.jpg" alt="Langka">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Ginataang Langka</div>
+              <div class="item-price">₱45.00</div>
+            </div>
+            <div class="item-desc"> Filipino vegetable stew made from unripe jackfruit in coconut milk and spices <a HREF="https://en.wikipedia.org/wiki/Ginataang_langka"> See More</a> </div>
+          </div>
+        </div>
+
+    <div class="menu-item"> 
+      <img src="images/wahin.jpeg" alt="Lumpiang Shanghai"> 
+      <div class="item-info"> 
+        <div class="item-header"> 
+          <div class="item-name">Lumpiang Shanghai</div> 
+          <div class="item-price">₱45.00</div> 
+        </div> 
+        <div class="item-desc">A popular Filipino deep-fried spring roll <a href="https://steemit.com/nunilon/@lydamaxine/lumpia-shanghai">See More</a></div> 
+      </div> 
+    </div> 
+  </div> 
+</div>
+
+<div class="price-section"> 
+  <h3 class="section-label">₱51 - ₱100</h3> 
+  <div class="menu-grid"> 
+    <div class="menu-item"> 
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbP2O7QQifs_JdsWc6-kwnmXZZUC2lWKZsVrnXfCbkAihWVe_MZuDU8F0&s=10" alt="Beef Pares"> 
+      <div class="item-info"> 
+        <div class="item-header"> 
+          <div class="item-name">Beef Pares</div> 
+          <div class="item-price">₱65.00</div> 
+        </div> 
+        <div class="item-desc">A Classic Filipino Dish made with braised beef stew with savory sauce <a href="https://panlasangpinoy.com/filipino-food-how-to-cook-beef-pares-recipe/">See More</a></div> 
+      </div> 
+    </div> 
+  </div> 
+</div>
+
+  
+  <div class="menu-item">
+          <img src="images/q.jpg" alt="Adobo">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Chicken Adobo</div>
+              <div class="item-price">₱65.00</div>
+            </div>
+            <div class="item-desc"> A Filipino Dish made of chicken, soy sauce, vinegar, and different aromatics <a HREF="https://panlasangpinoy.com/filipino-chicken-adobo-recipe/"> See More</a> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</section>
+
+<section id="canteen2" class="page">
+  <div class="container">
+    <h2 class="page-title">Canteen 2</h2>
+    
+    <div class="price-section">
+      <h3 class="section-label">Under ₱30</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <img src="images/sio.jpg" alt="Siomai">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Siomai</div>
+              <div class="item-price">₱12.00/pc</div>
+            </div>
+            <div class="item-desc">Dumpling meat made of ground pork <a href="https://thequirinokitchen.com/pork-siomai/">See More</a></div>
+          </div>
+        </div>
+        
+        <div class="menu-item">
+          <img src="images/pet.jpg" alt="Pancit Canton">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Pancit Canton</div>
+              <div class="item-price">₱30.00</div>
+            </div>
+            <div class="item-desc">Stir-fried noodles with veggies <a href="https://panlasangpinoy.com/pancit-canton-recipe/">See More</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-section">
+      <h3 class="section-label">₱30 - ₱50</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <img src="images/josh.jpg" alt="Talong">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Tortang Talong</div>
+              <div class="item-price">₱45.00</div>
+            </div>
+            <div class="item-desc">Filipino food made by pan-frying grilled whole eggplants dipped in an egg mixture <a HREF="https://panlasangpinoy.com/filipino-vegetable-food-eggplant-omelet-tortang-talong-recipe/"> See More</a> </div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img src="images/amp.jpg" alt="Ampalaya">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Ginisang Ampalaya</div>
+              <div class="item-price">₱45.00</div>
+            </div>
+            <div class="item-desc">Filipino sautéed bitter melon dish combined with scrambled eggs, tomatoes, and aromatics <a HREF="https://panlasangpinoy.com/healthy-bitter-melon-ginisang-ampalaya-recipe/"> See More</a> </div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img src="images/pol.jpg" alt="Pakbet">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Pinakbet</div>
+              <div class="item-price">₱45.00</div>
+            </div>
+            <div class="item-desc">Filipino vegetable stew flavored with fermented fish or shrimp paste <a HREF="https://panlasangpinoy.com/pinakbet-tagalog-recipe-knr-sc/"> See More</a> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-section">
+      <h3 class="section-label">₱51 - ₱100</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <img src="images/lp.jpg" alt="Porkchop">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Breaded Porkchop</div>
+              <div class="item-price">₱75.00</div>
+            </div>
+           <div class="item-desc"> A dish featuring a tender pork cutlet coated in a crispy, seasoned crust <a href="https://www.snapcalorie.com/nutrition/breaded_pork_chops_nutrition.html">See More</a></div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img src="images/op.jpg" alt="Honey Butter Chicken">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Honey Butter Chicken</div>
+              <div class="item-price">₱75.00</div>
+            </div>
+            <div class="item-desc">Made by tossing crispy or pan-seared chicken in a rich glaze of melted butter, honey, and garlic <a href="https://www.dontgobaconmyheart.co.uk/honey-butter-chicken/">See More</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="canteen3" class="page">
+  <div class="container">
+    <h2 class="page-title">Canteen 3</h2>
+    
+    <div class="price-section">
+      <h3 class="section-label">Under ₱30</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <img src="images/tog.jpg" alt="Lumpia">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Lumpiang Togue</div>
+              <div class="item-price">₱12.00/pc</div>
+            </div>
+            <div class="item-desc"> A dish made of sautéed togue wrapped in a thin pastry sheet and deep-fried to golden perfection <a href="https://www.snapcalorie.com/nutrition/lumpiang_togue_nutrition.html">See More</a></div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img src="images/jop.jpg" alt="Turon">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Turon</div>
+              <div class="item-price">₱25.00</div>
+            </div>
+            <div class="item-desc"> Made of thinly-sliced bananas rolled in a spring roll wrapper, fried until the wrapper is crisp, and coated with caramelized brown sugar <a href="https://en.wikipedia.org/wiki/Turon_(food)">See More</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-section">
+      <h3 class="section-label">₱30 - ₱50</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <img src="images/hun.jpg" alt="Munggo">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Ginisang Munggo</div>
+              <div class="item-price">₱45.00</div>
+            </div>
+            <div class="item-desc">A Filipino savory mung bean soup <a href="https://panlasangpinoy.com/ginisang-munggo-sauteed-mung-beans/">See More</a></div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img src="images/kor.jpg" alt="Sitaw">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Adobong Sitaw</div>
+              <div class="item-price">₱45.00</div>
+            </div>
+            <div class="item-desc"> A vegetable dish composed of string beans cooked adobo style <a href="https://panlasangpinoy.com/adobong-sitaw-string-bean-recipe/">See More</a></div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img src="images/qo.jpg" alt="Ginisa">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Ginisang Togue</div>
+              <div class="item-price">₱45.00</div>
+            </div>
+            <div class="item-desc">Sauteed Mung Bean Sprout with carrots, bell pepper, shrimp, and tofu <a href="https://www.kawalingpinoy.com/ginisang-togue/">See More</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-section">
+      <h3 class="section-label">₱51 - ₱100</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <img src="images/sis.jpg" alt="Sisig Tofu">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Sisig Tofu</div>
+              <div class="item-price">₱65.00</div>
+            </div>
+            <div class="item-desc">A dish composed of deep fried tofu cubes, chopped chili peppers, and onion <a href="https://panlasangpinoy.com/crispy-tofu-sisig-vegan-recipe/">See More</a></div>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img src="images/lor.jpg" alt="Chicken">
+          <div class="item-info">
+            <div class="item-header">
+              <div class="item-name">Fried Chicken</div>
+              <div class="item-price">₱75.00</div>
+            </div>
+            <div class="item-desc">A chicken fried until golden brown <a href="https://panlasangpinoy.com/filipino-fried-chicken/">See More</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-brand">
+      <a href="https://www.facebook.com/share/1D1x3u7H3Y/"> 
+      <img src="images/jema.png" alt="Budget Serve Logo">
+      </a>
+      <a href="https://www.facebook.com/cvsuimusofficial">
+      <img src="images/pogi.jpg" alt="Cvsu"> 
+      </a>
+      <h3>Budget Serve</h3>
+    </div>
+    <div class="footer-josh">
+    <div class="footer-links">
+      <p>Message us in:</p>
+       <a href="#canteen3">(Contact) (+63)936 887 3165</a>
+       <a href="https://www.facebook.com/profile.php?id=61590165344393">(Facebook) Budget Serve</a>
+      <a href="https://www.tiktok.com/@joshunoo?_r=1&_t=ZS-96qMb3MtoRd">(Tiktok) Budget Serve</a>
+     
+    </div>
+    </div>
+    <div class="footer-copy">© 2026 Budget Serve. All rights reserved.</div>
+  </div>
+</footer>
+
+</body>
+</html>
